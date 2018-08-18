@@ -19,10 +19,10 @@ metadata {
 		capability "Refresh"
 		capability "Sensor"
 		capability "Health Check"
-        
+
 		command "lowerHeatingSetpoint"
-		command "raiseHeatingSetpoint"		
-		command "poll"	    	
+		command "raiseHeatingSetpoint"
+		command "poll"
 	    command "heaterOn"
         command "heaterOff"
         command "nextMode"
@@ -31,12 +31,12 @@ metadata {
 	tiles {
 		standardTile("mode", "device.thermostatMode", width:2, height:2, inactiveLabel: false, decoration: "flat") {
 			state "OFF",  action:"nextMode",  nextState: "updating", icon: "st.thermostat.heating-cooling-off"
-			state "Heater", action:"nextMode", nextState: "updating", icon: "st.thermostat.heat"	            
+			state "Heater", action:"nextMode", nextState: "updating", icon: "st.thermostat.heating"
         	state "Solar Only", label:'${currentValue}', action:"nextMode",  nextState: "updating", icon: "https://bsileo.github.io/SmartThings_Pentair/solar-only.png"
             state "Solar Pref", label:'${currentValue}', action:"nextMode",  nextState: "updating", icon: "https://bsileo.github.io/SmartThings_Pentair/solar-preferred.jpg"
 			state "updating", label:"Updating...", icon: "st.Home.home1"
 		}
-               
+
         multiAttributeTile(name:"temperature", type:"generic", width:3, height:2, canChangeIcon: true) {
 			tileAttribute("device.temperature", key: "PRIMARY_CONTROL") {
 				attributeState("temperature", label:'${currentValue}°',
@@ -54,25 +54,25 @@ metadata {
 							[value: 44, color: "#1e9cbb"],
 							[value: 59, color: "#90d2a7"],
 							[value: 74, color: "#44b621"],
-							[value: 84, color: "#f1d801"],
-							[value: 95, color: "#d04e00"],
-							[value: 96, color: "#bc2323"]
+							[value: 88, color: "#f1d801"],
+							[value: 94, color: "#d04e00"],
+							[value: 100, color: "#bc2323"]
 					]
 				)
-			}           
+			}
 		}
-		
-                    
+
+
 		standardTile("lowerHeatingSetpoint", "device.heatingSetpoint", width:2, height:1, inactiveLabel: false, decoration: "flat") {
-			state "heatingSetpoint", action:"lowerHeatingSetpoint", icon:"st.thermostat.thermostat-left"
+			state "heatingSetpoint", action:"lowerHeatingSetpoint", icon:"st.thermostat.thermostat-down"
 		}
 		valueTile("heatingSetpoint", "device.heatingSetpoint", width:2, height:1, inactiveLabel: false, decoration: "flat") {
-			state "heatingSetpoint", label:'${currentValue}° heat', backgroundColor:"#ffffff"
+			state "heatingSetpoint", label:'${currentValue}° max', backgroundColor:"#ffffff"
 		}
 		standardTile("raiseHeatingSetpoint", "device.heatingSetpoint", width:2, height:1, inactiveLabel: false, decoration: "flat") {
-			state "heatingSetpoint", action:"raiseHeatingSetpoint", icon:"st.thermostat.thermostat-right"
+			state "heatingSetpoint", action:"raiseHeatingSetpoint", icon:"st.thermostat.thermostat-up"
 		}
-	
+
 	    standardTile("refresh", "device.thermostatMode", width:2, height:2, inactiveLabel: false, decoration: "flat") {
 			state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
 		}
@@ -97,13 +97,13 @@ def updated() {
 }
 
 def initialize() {
-	
+
     state.scale = "F"
 }
 
 def parse(String description)
 {
-	
+
 }
 
 
@@ -139,9 +139,9 @@ def alterSetpoint(raise) {
 	def targetValue = heatingSetpoint
 	def delta = (locationScale == "F") ? 1 : 0.5
 	targetValue += raise ? delta : - delta
-	
+
 	sendEvent("name": "heatingSetpoint", "value": targetValue,
-				unit: getTemperatureScale(), eventType: "ENTITY_UPDATE", displayed: true)    
+				unit: getTemperatureScale(), eventType: "ENTITY_UPDATE", displayed: true)
     parent.updateSetpoint(device,targetValue)
 }
 
@@ -149,11 +149,11 @@ def alterSetpoint(raise) {
 def setHeatingSetpoint(degrees) {
    log.debug "setHeatingSetpoint " + device.deviceNetworkId + "-" + degrees
 	def timeNow = now()
-    if (degrees) {	
+    if (degrees) {
     	if (!state.heatingSetpointTriggeredAt || (1 * 2 * 1000 < (timeNow - state.heatingSetpointTriggeredAt))) {
-			state.heatingSetpointTriggeredAt = timeNow               
+			state.heatingSetpointTriggeredAt = timeNow
 			state.heatingSetpoint = degrees.toDouble()
-			sendEvent(name: "heatingSetpoint", value:state.heatingSetpoint, unit: getTemperatureScale())    	
+			sendEvent(name: "heatingSetpoint", value:state.heatingSetpoint, unit: getTemperatureScale())
 		}
 	}
 }
@@ -167,18 +167,18 @@ def nextMode() {
     //log.debug("${currentMode} moving to next in ${supportedModes}")
     supportedModes.eachWithIndex {name, index ->
     	//log.debug("${index}:${name} -->${nextIndex}  ${name} == ${currentMode}")
-    	if (name == currentMode) { 
+    	if (name == currentMode) {
         	nextIndex = index +1
             return
          }
     }
-    //log.debug("nextMode id=${nextIndex}  compare to " + supportedModes.size())    
+    //log.debug("nextMode id=${nextIndex}  compare to " + supportedModes.size())
     if (nextIndex >= supportedModes.size()) {nextIndex=0 }
     log.info("Going to nextMode with id =${nextIndex}")
     heaterToMode(nextIndex)
 }
 
-def getModeMap() { 
+def getModeMap() {
     def mm = null
     if (parent.getDataValue("includeSolar")=='true') {
     	mm =  ["OFF",
@@ -188,10 +188,10 @@ def getModeMap() {
      	]
     }
     else {
-     mm = 
+     mm =
     	[
         "OFF",
-        "Heater"     
+        "Heater"
      	]
     }
     return mm
@@ -247,9 +247,9 @@ def heaterToMode(modeID) {
 
 
 def setTemperature(t) {
-	log.debug(device.label + " current temp set to ${t}") 
-    sendEvent(name: 'temperature', value: t, unit:"F")    
-    log.debug(device.label + " DONE current temp set to ${t}") 
+	log.debug(device.label + " current temp set to ${t}")
+    sendEvent(name: 'temperature', value: t, unit:"F")
+    log.debug(device.label + " DONE current temp set to ${t}")
 }
 
 // Get stored temperature from currentState in current local scale

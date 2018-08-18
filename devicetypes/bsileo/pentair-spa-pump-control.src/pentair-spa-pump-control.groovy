@@ -33,24 +33,24 @@ metadata {
 
 	// UI tile definitions
 	tiles {
-		multiAttributeTile(name:"switch", type: "generic", width: 1, height: 1, canChangeIcon: true)  {
+		multiAttributeTile(name:"switch", type: "generic", width: 1, height: 1, canChangeIcon: true, decoration: "flat")  {
         	tileAttribute("device.switch", key: "PRIMARY_CONTROL") {
              	attributeState "off",  label:"Off", action:"on", nextState: "turningOn", icon: "https://bsileo.github.io/SmartThings_Pentair/spa.png",backgroundColor: "#ffffff"
             	attributeState "on", label:"On", action:"off",  nextState: "turningOff", icon: "https://bsileo.github.io/SmartThings_Pentair/spa.png",backgroundColor: "#00a0dc"
                 attributeState "turningOn", label:'${name}', icon:"https://bsileo.github.io/SmartThings_Pentair/spa.png", backgroundColor:"#00a0dc", nextState: "on"
-                attributeState "turningOff", label:'${name}', icon:"https://bsileo.github.io/SmartThings_Pentair/spa.png", backgroundColor:"#ffffff", nextState: "off"            	      
+                attributeState "turningOff", label:'${name}', icon:"https://bsileo.github.io/SmartThings_Pentair/spa.png", backgroundColor:"#ffffff", nextState: "off"
             }
             // Note - this Approach works to display this name in the Child Device but does not carry through to the parent. Multi-attribute tiles do not work on a childTile??
             tileAttribute ("device.friendlyName", key: "SECONDARY_CONTROL") {
         		attributeState "name", label:'${currentValue}'
-    		}		
+    		}
         }
      }
 	main "switch"
 	details "switch"
 }
 
-def installed() {	
+def installed() {
 }
 
 def parse(String description) {
@@ -59,24 +59,24 @@ def parse(String description) {
          createEvent(name: pair[0].trim(), value: pair[1].trim())
      }
      catch (java.lang.ArrayIndexOutOfBoundsException e) {
-           log.debug "Error! " + e   
+           log.debug "Error! " + e
     }
-	
+
 }
 
 def onConfirmed() {
     //log.debug("CONF ${device} turned on")
-	sendEvent(name: "switch", value: "on", displayed:true)    
+	sendEvent(name: "switch", value: "on", displayed:true)
 }
 
 def offConfirmed() {
 	//log.debug("CONF ${device} turned off")
-	sendEvent(name: "switch", value: "off", displayed:true)  
+	sendEvent(name: "switch", value: "off", displayed:true)
 }
 
 def on() {
 	parent.spaPumpOn()
-    sendEvent(name: "switch", value: "turningOn", displayed:false,isStateChange:false)    
+    sendEvent(name: "switch", value: "turningOn", displayed:false,isStateChange:false)
 }
 
 def off() {

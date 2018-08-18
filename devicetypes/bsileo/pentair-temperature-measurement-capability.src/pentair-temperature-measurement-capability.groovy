@@ -32,7 +32,7 @@ metadata {
 					[value: 44, color: "#1e9cbb"],
 					[value: 59, color: "#90d2a7"],
 					[value: 74, color: "#44b621"],
-					[value: 84, color: "#f1d801"],
+					[value: 88, color: "#f1d801"],
 					[value: 95, color: "#d04e00"],
 					[value: 96, color: "#bc2323"]
 				]
@@ -51,10 +51,10 @@ def parse(String description) {
      }
      catch (java.lang.ArrayIndexOutOfBoundsException e) {
            log.debug "Error! " + e + "-Parsing:'" + description + "'"
-    }    
+    }
 }
 
 def setTemperature(t) {
-	log.debug(device.label + " set to ${t}") 
+	log.debug(device.label + " set to ${t}")
     sendEvent(name: 'temperature', value: t, unit:"F")
 }

@@ -11,74 +11,74 @@ metadata {
        capability "Sensor"
        attribute "poolPump","string"
        attribute "spaPump","string"
-       attribute "valve","string"       
+       attribute "valve","string"
        command "poolPumpOn"
        command "poolPumpOff"
        command "spaPumpOn"
        command "spaPumpOff"
     }
 
-	preferences {       
+	preferences {
         section("Configuration") {
           input "mainSwitchMode", "enum", title: "Main Tile Mode", required:true,  displayDuringSetup: true , options: ["Pool Light","Pool Pump","Spa Pump"], description:"Select what feature to control with the main tile"
         }
 	}
 	tiles(scale: 2) {
-       
-        childDeviceTile("poolTemp", "poolHeat", height:2,width:2,childTileName:"temperature")                
-        standardTile("mainSwitch", "device.switch", height:1,width:1,inactiveLabel: false,canChangeIcon: true) {
+
+        standardTile("mainSwitch", "device.switch", height:1,width:1,inactiveLabel: false,canChangeIcon: true, decoration: "flat") {
             state "off", label: "off", icon: "st.Lighting.light1", backgroundColor: "#ffffff", action: "switch.on", nextState: "on"
- 			state "on", label: "on", icon: "st.Lighting.light1", backgroundColor: "#00a0dc", action: "switch.off", nextState: "off"
+ 			      state "on", label: "on", icon: "st.Lighting.light1", backgroundColor: "#00a0dc", action: "switch.off", nextState: "off"
             state "updating", label:"Updating...", icon: "st.Lighting.light13"
         }
+
+        childDeviceTile("poolTemp", "poolHeat", height:2,width:2,childTileName:"temperature")
+        standardTile("poolPump", "device.poolPump", width:2, height:1, inactiveLabel: false, decoration: "flat") {
+      			state "off",  label:"Off", action:"poolPumpOn", nextState: "updating", icon: "http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png"
+      			state "on", label:"On", action:"poolPumpOff",  nextState: "updating", icon: "http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png"
+      			state "updating", label:"Updating...", icon: "http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png"
+    		}
         childDeviceTile("PoolHeatmode", "poolHeat", height:1,width:2,childTileName:"mode")
-		standardTile("poolPump", "device.poolPump", width:2, height:1, inactiveLabel: false, decoration: "flat") {
-			state "off",  label:"Off", action:"poolPumpOn", nextState: "updating", icon: "http://cdn.device-icons.smartthings.com/Health & Wellness/health2-icn@2x.png"
-			state "on", label:"On", action:"poolPumpOff",  nextState: "updating", icon: "http://cdn.device-icons.smartthings.com/Health & Wellness/health2-icn@2x.png"			
-			state "updating", label:"Updating...", icon: "http://cdn.device-icons.smartthings.com/Health & Wellness/health2-icn@2x.png"
-		}      
-        
         childDeviceTile("PoolHeatlower", "poolHeat", height:1,width:1,childTileName:"lowerHeatingSetpoint")
         childDeviceTile("PoolHeatset", "poolHeat", height:1,width:2,childTileName:"heatingSetpoint")
         childDeviceTile("PoolHeatraise", "poolHeat", height:1,width:1,childTileName:"raiseHeatingSetpoint")
-      
-        childDeviceTile("spaTemp", "spaHeat", height:2,width:2,childTileName:"temperature")        
-        childDeviceTile("SpaHeatmode", "spaHeat", height:1,width:2,childTileName:"mode")           
-        childDeviceTile("spaPump", "spaPump", height:1,width:2,childTileName:"switch")           
-        
+
+
+        childDeviceTile("spaTemp", "spaHeat", height:2,width:2,childTileName:"temperature")
+        childDeviceTile("spaPump", "spaPump", height:1,width:2,childTileName:"switch")
+        childDeviceTile("SpaHeatmode", "spaHeat", height:1,width:2,childTileName:"mode")
         childDeviceTile("SpaHeatlower", "spaHeat", height:1,width:1,childTileName:"lowerHeatingSetpoint")
         childDeviceTile("SpaHeatset", "spaHeat", height:1,width:2,childTileName:"heatingSetpoint")
         childDeviceTile("SpaHeatraise", "spaHeat", height:1,width:1,childTileName:"raiseHeatingSetpoint")
-        
+
         //Always SPA so do not display here (??)
-        // childDeviceTile("Aux 1 Switch", "circuit1", height:1,width:1,childTileName:"switch")    
-        
-        childDeviceTile("Aux 2 Switch", "circuit2", height:1,width:1,childTileName:"switch")    
-        childDeviceTile("Aux 3 Switch", "circuit3", height:1,width:1,childTileName:"switch")    
-        childDeviceTile("Aux 4 Switch", "circuit4", height:1,width:1,childTileName:"switch")                        
-        childDeviceTile("Aux 5 Switch", "circuit5", height:1,width:1,childTileName:"switch")    
+        // childDeviceTile("Aux 1 Switch", "circuit1", height:1,width:1,childTileName:"switch")
+
+        childDeviceTile("Aux 2 Switch", "circuit2", height:1,width:1,childTileName:"switch")
+        childDeviceTile("Aux 3 Switch", "circuit3", height:1,width:1,childTileName:"switch")
+        childDeviceTile("Aux 4 Switch", "circuit4", height:1,width:1,childTileName:"switch")
+        childDeviceTile("Aux 5 Switch", "circuit5", height:1,width:1,childTileName:"switch")
         //Always Pool so do not display here (??)
-        //childDeviceTile("Aux 6 Switch", "circuit6", height:1,width:1,childTileName:"switch")                    
-        childDeviceTile("Aux 7 Switch", "circuit7", height:1,width:1,childTileName:"switch")    
-        childDeviceTile("Aux 8 Switch", "circuit8", height:1,width:1,childTileName:"switch")    
+        //childDeviceTile("Aux 6 Switch", "circuit6", height:1,width:1,childTileName:"switch")
+        childDeviceTile("Aux 7 Switch", "circuit7", height:1,width:1,childTileName:"switch")
+        childDeviceTile("Aux 8 Switch", "circuit8", height:1,width:1,childTileName:"switch")
         for (i in 9..20) {
-        	childDeviceTile("Aux ${i} Switch", "circuit${i}", height:1,width:1,childTileName:"switch")    
+        	childDeviceTile("Aux ${i} Switch", "circuit${i}", height:1,width:1,childTileName:"switch")
         }
-        
-               
-        childDeviceTile("airTemp", "airTemp", height:1,width:2,childTileName:"temperature")     
-        
+
+
+        childDeviceTile("airTemp", "airTemp", height:1,width:2,childTileName:"temperature")
+
         // Always have only one of the 2 below
         childDeviceTile("solarTemp", "solarTemp", height:1,width:2,childTileName:"temperature")
-        childDeviceTile("solarDummy", "solarDummy", height:1,width:2,childTileName:"dummy")        
-        
+        childDeviceTile("solarDummy", "solarDummy", height:1,width:2,childTileName:"dummy")
+
         valueTile("valve","valve",width:1, height:1, decoration:"flat")  {
-        	state("valve", label:' Valve: ${currentValue}') 
-        } 
+        	state("valve", label:' Valve: ${currentValue}')
+        }
         standardTile("refresh", "device.refresh", height:1,width:1,inactiveLabel: false) {
                 state "default", label:'Refresh', action:"refresh.refresh",  icon:"st.secondary.refresh-icon"
         }
-   
+
    		section (hideable:true, hidden:true, "chlorinator") {
             childDeviceTile("saltPPM","poolChlorinator", height:2,width:2,childTileName:"saltPPM")
             childDeviceTile("chlorinateSwitch","poolChlorinator", height:1,width:1,childTileName:"chlorinate")
@@ -87,7 +87,7 @@ metadata {
             childDeviceTile("superChlorinate","poolChlorinator", height:1,width:1,childTileName:"superChlorinate")
             childDeviceTile("status","poolChlorinator", height:1,width:3,childTileName:"status")
 		}
-		//KJC added intellichem section  
+		//KJC added intellichem section
         section (hideable:true, hidden:true, "intellichem") {
             childDeviceTile("ORP","poolIntellichem", height:2,width:2,childTileName:"ORP")
             childDeviceTile("modeORP","poolIntellichem", height:1,width:2,childTileName:"modeORP")
@@ -104,29 +104,29 @@ metadata {
 
             childDeviceTile("pHSetLower", "poolIntellichem", height:1,width:1,childTileName:"lowerpHSetpoint")
             childDeviceTile("setpointpH","poolIntellichem", height:1,width:2,childTileName:"setpointpH")
-            childDeviceTile("pHSetRaise", "poolIntellichem", height:1,width:1,childTileName:"raisepHSetpoint")   
+            childDeviceTile("pHSetRaise", "poolIntellichem", height:1,width:1,childTileName:"raisepHSetpoint")
 
-            childDeviceTile("SI","poolIntellichem", height:2,width:2,childTileName:"SI")      
+            childDeviceTile("SI","poolIntellichem", height:2,width:2,childTileName:"SI")
             childDeviceTile("flowAlarm","poolIntellichem", height:1,width:2,childTileName:"flowAlarm")
             childDeviceTile("CYA","poolIntellichem", height:1,width:2,childTileName:"CYA")
             childDeviceTile("CALCIUMHARDNESS","poolIntellichem", height:1,width:2,childTileName:"CALCIUMHARDNESS")
             childDeviceTile("TOTALALKALINITY","poolIntellichem", height:1,width:2,childTileName:"TOTALALKALINITY")
         }
-        
-        // Aux Circuits must be manually adjusted for exclusion below since ST does not allow any dynamic processing.  
+
+        // Aux Circuits must be manually adjusted for exclusion below since ST does not allow any dynamic processing.
         // The system will automatically include only the Aux circuits that exist so listing extras below will not impact the User Interface but
         // you must manually remove any entries that DO exist in your poolController configuration (e.g. poolcontroll:30000/config )
         // you do not want to see as the default configuration will display all circuits that exist
-        
+
         main "mainSwitch"
-        details "poolTemp","PoolHeatmode","poolPump","PoolHeatlower","PoolHeatset","PoolHeatraise",
-                "spaTemp","SpaHeatmode","spaPump","SpaHeatlower","SpaHeatset","SpaHeatraise",                
+        details "poolTemp","poolPump","PoolHeatmode","PoolHeatlower","PoolHeatset","PoolHeatraise",
+                "spaTemp","spaPump","SpaHeatmode","SpaHeatlower","SpaHeatset","SpaHeatraise",
                 "airTemp","solarTemp","solarDummy","valve","refresh",
                 "saltPPM","chlorinateSwitch","currentOutput","poolSpaSetpoint","superChlorinate","status",
                 "ORP","modeORP","tankORP","ORPSetLower","setpointORP","ORPSetRaise","pH","modepH","tankpH","pHSetLower","setpointpH","pHSetRaise","SI","flowAlarm","CYA","CALCIUMHARDNESS","TOTALALKALINITY",
                 "Aux 2 Switch","Aux 3 Switch","Aux 4 Switch","Aux 5 Switch","Aux 7 Switch","Aux 8 Switch",
                 "Aux 9 Switch","Aux 10 Switch","Aux 11 Switch","Aux 12 Switch","Aux 13 Switch","Aux 14 Switch",
-                "Aux 15 Switch","Aux 16 Switch","Aux 17 Switch","Aux 18 Switch","Aux 19 Switch","Aux 20 Switch"             
+                "Aux 15 Switch","Aux 16 Switch","Aux 17 Switch","Aux 18 Switch","Aux 19 Switch","Aux 20 Switch"
 	}
 }
 
@@ -136,7 +136,7 @@ def configure() {
 }
 
 def installed() {
-	manageChildren()    
+	manageChildren()
 }
 
 def updated() {
@@ -147,78 +147,78 @@ def updated() {
     runIn(3, "updateDeviceNetworkID")
   } else {
     log.trace "updated(): Ran within last 5 seconds so aborting."
-  }  
+  }
 }
 
 def manageChildren() {
 	//log.debug "manageChildren..."
-	def hub = location.hubs[0]    
+	def hub = location.hubs[0]
     def poolHeat = childDevices.find({it.deviceNetworkId == getChildDNI("poolHeat")})
     if (!poolHeat) {
-        poolHeat = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("poolHeat"), hub.id, 
+        poolHeat = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("poolHeat"), hub.id,
                                   [completedSetup: true, label: "${device.displayName} (Pool Heat)" , isComponent:false, componentName: "poolHeat", componentLabel:"${device.displayName} (Pool Heat)" ])
-        log.debug "Created PoolHeat" 
+        log.debug "Created PoolHeat"
     }
     if (getDataValue("includeSpa")=='true') {
         def spaHeat = childDevices.find({it.deviceNetworkId == getChildDNI("spaHeat")})
         if (!spaHeat) {
-            spaHeat = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("spaHeat"), hub.id, 
+            spaHeat = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("spaHeat"), hub.id,
                                      [completedSetup: true, label: "${device.displayName} (Spa Heat)" , isComponent:false, componentName: "spaHeat", componentLabel:"${device.displayName} (Spa Heat)" ])
             log.debug "Created SpaHeat"
         }
         def spaPump = childDevices.find({it.deviceNetworkId == getChildDNI("spaPump")})
         if (!spaPump) {
-            spaHeat = addChildDevice("bsileo","Pentair Spa Pump Control", getChildDNI("spaPump"), hub.id, 
+            spaHeat = addChildDevice("bsileo","Pentair Spa Pump Control", getChildDNI("spaPump"), hub.id,
                                      [completedSetup: true, label: "${device.displayName} (Spa Pump)" , isComponent:false, componentName: "spaPump", componentLabel:"${device.displayName} (Spa Pump)" ])
             log.debug "Created SpaPump Child"
         }
-    }    
-    
+    }
+
     manageCircuits()
 
 
     def airTemp = childDevices.find({it.deviceNetworkId == getChildDNI("airTemp")})
     if (!airTemp) {
-        airTemp = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("airTemp"), hub.id, 
+        airTemp = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("airTemp"), hub.id,
                                  [ label: "${device.displayName} Air Temperature", componentName: "airTemp", componentLabel: "${device.displayName} Air Temperature",
-                                  isComponent:false, completedSetup:true])                	
+                                  isComponent:false, completedSetup:true])
     }
 
-    
-    if (getDataValue("includeSolar")=='true') {    
-    	def solarTemp = childDevices.find({it.deviceNetworkId == getChildDNI("solarTemp")})        
+
+    if (getDataValue("includeSolar")=='true') {
+    	def solarTemp = childDevices.find({it.deviceNetworkId == getChildDNI("solarTemp")})
     	if (!solarTemp) {
     		log.debug("Create Solar temp")
-        	solarTemp = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("solarTemp"), hub.id, 
+        	solarTemp = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("solarTemp"), hub.id,
                                    [ label: "${device.displayName} Solar Temperature", componentName: "solarTemp", componentLabel: "${device.displayName} Solar Temperature",
-                                    isComponent:false, completedSetup:true])        
+                                    isComponent:false, completedSetup:true])
     	}
     }
     else {
     	 def solarTemp = childDevices.find({it.deviceNetworkId == getChildDNI("solarDummy")})
          if (!solarTemp) {
     		log.debug("Create Solar dummy")
-        	solarTemp = addChildDevice("bsileo","Pentair Dummy Tile", getChildDNI("solarDummy"), hub.id, 
+        	solarTemp = addChildDevice("bsileo","Pentair Dummy Tile", getChildDNI("solarDummy"), hub.id,
                                    [ label: "${device.displayName} Solar Dummy", componentName: "solarDummy", componentLabel: "${device.displayName} Solar Dummy",
                                     isComponent:false, completedSetup:true])
          }
     }
-    
-    
+
+
 
     def ichlor = childDevices.find({it.deviceNetworkId == getChildDNI("poolChlorinator")})
     if (!ichlor && getDataValue("includeChlorinator")=='true') {
     	log.debug("Create Chlorinator")
-        ichlor = addChildDevice("bsileo","Pentair Chlorinator", getChildDNI("poolChlorinator"), hub.id, 
+        ichlor = addChildDevice("bsileo","Pentair Chlorinator", getChildDNI("poolChlorinator"), hub.id,
                                 [ label: "${device.displayName} Chlorinator", componentName: "poolChlorinator", componentLabel: "${device.displayName} Chlorinator",
-                                 isComponent:true, completedSetup:true])        
-    }  
+                                 isComponent:true, completedSetup:true])
+    }
     def ichem = childDevices.find({it.deviceNetworkId == getChildDNI("poolIntellichem")})
-    if (!ichem && getDataValue("includeIntellichem")=='true') {          
-        ichem = addChildDevice("bsileo","Pentair Intellichem", getChildDNI("poolIntellichem"), hub.id, 
+    if (!ichem && getDataValue("includeIntellichem")=='true') {
+        ichem = addChildDevice("bsileo","Pentair Intellichem", getChildDNI("poolIntellichem"), hub.id,
                                [ label: "${device.displayName} Intellichem", componentName: "poolIntellichem", componentLabel: "${device.displayName} Intellichem",
-                                isComponent:false, completedSetup:true])  
-    }   
+                                isComponent:false, completedSetup:true])
+    }
 }
 
 def manageCircuits() {
@@ -229,55 +229,55 @@ def manageCircuits() {
 
 
 def manageFeatureCircuits() {
-	def hub = location.hubs[0]   
+	def hub = location.hubs[0]
     def nLCircuits = parent.state.nonLightCircuits
     nLCircuits.each {i,k ->
     	def cData = parent.state.circuitData[i.toString()]
-        if (cData.friendlyName == "NOT USED") return        
-        def auxname = "circuit${i}"        
-        def auxLabel = "${device.displayName} (${cData.friendlyName})"        
+        if (cData.friendlyName == "NOT USED") return
+        def auxname = "circuit${i}"
+        def auxLabel = "${device.displayName} (${cData.friendlyName})"
         try {
             def auxButton = childDevices.find({it.deviceNetworkId == getChildDNI(auxname)})
             if (!auxButton) {
-            	log.info "Create Aux Circuit switch ${auxLabel} Named=${auxname}" 
-                auxButton = addChildDevice("bsileo","Pentair Pool Control Switch", getChildDNI(auxname), hub.id, 
-                                           [completedSetup: true, label: auxLabel , isComponent:false, componentName: auxname, componentLabel: auxLabel, 
+            	log.info "Create Aux Circuit switch ${auxLabel} Named=${auxname}"
+                auxButton = addChildDevice("bsileo","Pentair Pool Control Switch", getChildDNI(auxname), hub.id,
+                                           [completedSetup: true, label: auxLabel , isComponent:false, componentName: auxname, componentLabel: auxLabel,
                                            data: [type:cData.circuitFunction]
                                            ])
-                log.debug "Success - Created Aux switch ${i}" 
+                log.debug "Success - Created Aux switch ${i}"
             }
             else {
-                log.info "Found existing Aux Switch ${i} - No Updates Supported" 
+                log.info "Found existing Aux Switch ${i} - No Updates Supported"
             }
         }
         catch(physicalgraph.app.exception.UnknownDeviceTypeException e)
         {
-            log.debug "Error! " + e                                                                
+            log.debug "Error! " + e
         }
     }
 }
 
 def manageLightCircuits() {
 	def hub = location.hubs[0]
-     def lCircuits = parent.state.lightCircuits    
+     def lCircuits = parent.state.lightCircuits
     lCircuits.each {i,k ->
-        def auxname = "circuit${i}"        
-        def auxLabel = "${device.displayName} (${k.circuitName})"        
+        def auxname = "circuit${i}"
+        def auxLabel = "${device.displayName} (${k.circuitName})"
         try {
             def auxButton = childDevices.find({it.deviceNetworkId == getChildDNI(auxname)})
             if (!auxButton) {
-            	log.info "Create Light switch ${auxLabel} Named=${auxname}" 
-                auxButton = addChildDevice("bsileo","Pentair Pool Light Switch", getChildDNI(auxname), hub.id, 
+            	log.info "Create Light switch ${auxLabel} Named=${auxname}"
+                auxButton = addChildDevice("bsileo","Pentair Pool Light Switch", getChildDNI(auxname), hub.id,
                                            [completedSetup: true, label: auxLabel , isComponent:false, componentName: auxname, componentLabel: auxLabel])
-                log.debug "Success - Created Light switch ${i}" 
+                log.debug "Success - Created Light switch ${i}"
             }
             else {
-                log.info "Found existing Aux Light Switch ${i} - No Updates Supported" 
+                log.info "Found existing Aux Light Switch ${i} - No Updates Supported"
             }
         }
         catch(physicalgraph.app.exception.UnknownDeviceTypeException e)
         {
-            log.debug "Error! " + e                                                                
+            log.debug "Error! " + e
         }
 
     }
@@ -292,7 +292,7 @@ def poll() {
   sendEthernet("/all")
 }
 
-def parse(String description) {  
+def parse(String description) {
   //log.debug "Executing parse()"
   def msg = parseLanMessage(description)
   log.debug "Full msg: ${msg}"
@@ -309,7 +309,7 @@ def parse(String description) {
   if (msg.json.time != null) {parseTime(msg.json.time)} else {log.debug("no Time in msg")}
   if (msg.json.schedule != null) {parseSchedule(msg.json.schedule)} else {log.debug("no Schedule in msg")}
   if (msg.json.pump != null) {parsePump(msg.json.pump)} else {log.debug("no Pumps in msg")}
-  if (msg.json.valve != null) {parseValve(msg.json.valve)} else {log.debug("no Valve in msg")}     
+  if (msg.json.valve != null) {parseValve(msg.json.valve)} else {log.debug("no Valve in msg")}
   if (msg.json.chlorinator != null) {parseChlorinator(msg.json.chlorinator)} else {log.debug("no Chlor in msg")}
   if (msg.json.intellichem != null) {parseIntellichem(msg.json.intellichem)} else {log.debug("no Chem in msg")}
 
@@ -326,56 +326,56 @@ def parseSchedule(msg) {
 }
 def parseValve(msg) {
 	log.info("Parse Valve: ${msg}")
-    sendEvent(name: "valve", value: msg.valves)            
+    sendEvent(name: "valve", value: msg.valves)
 }
 def parseIntellichem(msg) {
 	log.info("Parse Intellichem: ${msg}")
     childDevices.find({it.deviceNetworkId == "poolIntellichem"})?.parse(msg)
 }
- 
 
-def parseCircuits(msg) {   
+
+def parseCircuits(msg) {
 	log.info("Parse Circuits: ${msg}")
-    msg.each {         
+    msg.each {
          def child = getChildCircuit(it.key)
          //log.debug "CIR JSON:${it.key}==${it.value}::${child}"
          if (child) {
-            def stat = it.value.status ? it.value.status : 0         
+            def stat = it.value.status ? it.value.status : 0
             def status = stat == 0 ? "off" : "on"
             //log.debug "Child==${child} --> ${stat}"
             def mainID = getMainModeID()
             def currentID = toIntOrNull(it.key)
-         	if (stat == 0) { 
-                child.offConfirmed() 
-             } 
-            else { 
+         	if (stat == 0) {
+                child.offConfirmed()
+             }
+            else {
                child.onConfirmed()
             };
-            if (currentID == poolPumpCircuitID()) { 
-                sendEvent(name: "poolPump", value: status, displayed:true)            
+            if (currentID == poolPumpCircuitID()) {
+                sendEvent(name: "poolPump", value: status, displayed:true)
             }
-            if (currentID == spaPumpCircuitID()) { 
+            if (currentID == spaPumpCircuitID()) {
             	sendEvent(name: "spaPump", value: status, displayed:true)
                 def spaPump = getSpaPumpChild()
-                if (stat == 0) { 
-                	spaPump.offConfirmed() 
-             	} 
-            	else { 
+                if (stat == 0) {
+                	spaPump.offConfirmed()
+             	}
+            	else {
                		spaPump.onConfirmed()
             	};
             }
-            if (currentID == mainID) { 
-            	sendEvent(name: "switch", value: status, displayed:true)            
+            if (currentID == mainID) {
+            	sendEvent(name: "switch", value: status, displayed:true)
             }
      		child.setCircuitFunction("${it.value.circuitFunction}")
-            child.setFriendlyName("${it.value.friendlyName}")               
+            child.setFriendlyName("${it.value.friendlyName}")
 
-            sendEvent(name: "circuit${currentID}", value:status, 
-             				displayed:true, descriptionText:"Circuit ${child.label} set to ${status}" 
-                            )            
-  
+            sendEvent(name: "circuit${currentID}", value:status,
+             				displayed:true, descriptionText:"Circuit ${child.label} set to ${status}"
+                            )
+
          }
-      }     
+      }
 }
 
 def getChildCircuit(id) {
@@ -385,17 +385,17 @@ def getChildCircuit(id) {
     def cname = 'circuit' + id
 	def dni = getChildDNI(cname)
     //return childDevices.find {it.deviceNetworkId == dni}
-    
+
     def theChild
     children.each { child ->
     	//log.debug "CHECK Child for :${dni}==${child}::" + child.deviceNetworkId
-        if (child.deviceNetworkId == dni) { 
+        if (child.deviceNetworkId == dni) {
           //log.debug "HIT Child for :${id}==${child}"
-          theChild = child          
+          theChild = child
         }
     }
     return theChild
-    
+
 }
 
 def getPoolPumpChild() {
@@ -426,30 +426,30 @@ def parseTemps(msg) {
     def sh=childDevices.find({it.deviceNetworkId == getChildDNI("spaHeat")})
     def at = childDevices.find({it.deviceNetworkId == getChildDNI("airTemp")})
     def st = childDevices.find({it.deviceNetworkId == getChildDNI("solarTemp")})
-    
-    msg.each {k, v ->        	         
+
+    msg.each {k, v ->
          //log.debug "TEMP Key:${k}  Val:${v}"
          switch (k) {
-        	case "poolTemp":            	
+        	case "poolTemp":
             	ph?.setTemperature(v)
             	break
         	case "spaTemp":
             	sh?.setTemperature(v)
             	break
-        	case "airTemp":            	
+        	case "airTemp":
                 at?.setTemperature(v)
             	break
         	case "solarTemp":
                 st?.setTemperature(v)
             	break
-        	case "poolSetPoint":            	
+        	case "poolSetPoint":
                 ph?.setHeatingSetpoint(v)
             	break
             case "spaSetPoint":
             	sh?.setHeatingSetpoint(v)
             	break
         	case "poolHeatMode":
-                ph?.switchToModeID(v)                            	
+                ph?.switchToModeID(v)
                 break
             case "spaHeatMode":
             	sh?.switchToModeID(v)
@@ -487,7 +487,7 @@ def off() {
     }
     else if (mainSwitchMode == 'Spa Pump') {
     	spaPumpOff()
-    }	
+    }
 }
 
 def getMainModeID() {
@@ -502,21 +502,21 @@ def getMainModeID() {
     }
 }
 
-def chlorinatorOn() {  
+def chlorinatorOn() {
   return chlorinatorOn(70)
 }
 
-def chlorinatorOn(level) {  
+def chlorinatorOn(level) {
   return sendEthernet("/chlorinator/${level}")
 }
 
 
-def chlorinatorOff() {  
+def chlorinatorOff() {
   return sendEthernet("/chlorinator/0")
 }
 
 
-def poolPumpOn() {	
+def poolPumpOn() {
 	return setCircuit(poolPumpCircuitID(),1)
 }
 
@@ -534,7 +534,7 @@ def spaPumpOff() {
 }
 
 def lightCircuitID() {
-	//log.debug("Get LIGHTS child " + childofType("Intellibrite")?.deviceNetworkId)    
+	//log.debug("Get LIGHTS child " + childofType("Intellibrite")?.deviceNetworkId)
 	return childCircuitID(childofType("Intellibrite")?.deviceNetworkId)
 }
 
@@ -576,7 +576,7 @@ def setCircuit(circuit, state) {
 }
 
 // **********************************
-// Heater control functions to update the current heater state / setpoints on the poolController. 
+// Heater control functions to update the current heater state / setpoints on the poolController.
 // spdevice is the child device with the correct DNI to use in referecing SPA or POOL
 // **********************************
 def heaterOn(spDevice) {
@@ -604,15 +604,15 @@ def updateSetpoint(spDevice,setPoint) {
 
 def heaterModeCallback(physicalgraph.device.HubResponse hubResponse) {
     log.debug "Entered heaterModeCallback()..."
-	def msg = hubResponse.json    
-    //log.debug "Full msg: ${msg}"  
-    //log.debug "Heater status = ${msg.status}"    
+	def msg = hubResponse.json
+    //log.debug "Full msg: ${msg}"
+    //log.debug "Heater status = ${msg.status}"
     //log.debug "${msg.text} -> indexOf:" + msg.text.indexOf('spa')
     if (msg.text.indexOf('spa') > 0) {
     	def ph=getSpaHeatChild()
         log.info("Update Spa heater to ${msg.status}")
     	sh?.switchToMode(msg.status)
-    }   
+    }
     else {
     	def ph=getPoolHeatChild()
         log.info("Update Pool heater to ${msg.status}")
@@ -640,7 +640,7 @@ private sendEthernet(message, aCallback) {
          	//protocol: Protocol.LAN,
          	headers: [
               	HOST: "${ip}:${port}",
-              	"Accept":"application/json" 
+              	"Accept":"application/json"
             	],
         	query:"",
         	body:""
@@ -666,7 +666,7 @@ private setDeviceNetworkId(){
     if (device.deviceNetworkId != "$hex") {
         device.deviceNetworkId = "$hex"
         log.debug "Device Network Id set to ${device.deviceNetworkId}"
-    }    
+    }
 }
 
 private String convertHostnameToIPAddress(hostname) {
@@ -713,7 +713,7 @@ private getCallBackAddress() {
 }
 
 
-private String convertIPtoHex(ipAddress) { 
+private String convertIPtoHex(ipAddress) {
     String hex = ipAddress.tokenize( '.' ).collect {  String.format( '%02x', it.toInteger() ) }.join()
     return hex
 
@@ -761,7 +761,7 @@ def roundC (tempC) {
 }
 
  def toIntOrNull(it) {
-   return it?.isInteger() ? it.toInteger() : null 
+   return it?.isInteger() ? it.toInteger() : null
  }
 
 def sync(ip, port) {
