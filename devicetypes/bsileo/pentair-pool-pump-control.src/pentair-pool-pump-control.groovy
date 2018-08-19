@@ -12,13 +12,13 @@
  *
  */
 metadata {
-  definition (name: "Pentair Pool Light Switch", namespace: "bsileo", author: "Brad Sileo") {
+  definition (name: "Pentair Pool Pump Control", namespace: "bsileo", author: "Brad Sileo") {
     capability "Switch"
-        command onConfirmed
-        command offConfirmed
-        attribute "friendlyName", "string"
-        attribute "circuitFunction", "string"
-        attribute "circuitId", "integer"
+    command onConfirmed
+    command offConfirmed
+    attribute "friendlyName", "string"
+    attribute "circuitFunction", "string"
+    attribute "circuitId", "integer"
   }
 
   // simulator metadata
@@ -34,12 +34,12 @@ metadata {
 
   // UI tile definitions
   tiles {
-    multiAttributeTile(name:"switch", type: "generic", width: 1, height: 1, canChangeIcon: true)  {
+    multiAttributeTile(name:"switch", type: "generic", width: 1, height: 1, canChangeIcon: true, decoration: "flat")  {
           tileAttribute("device.switch", key: "PRIMARY_CONTROL") {
-                attributeState "off", label: '${name}', action: "switch.on", icon: "st.Lighting.light13", backgroundColor: "#ffffff", nextState: "turningOn"
-                attributeState "on", label: '${name}', action: "switch.off", icon: "st.Lighting.light11", backgroundColor: "#79b821", nextState: "tuningOff"
-                attributeState "turningOn", label:'${name}', icon:"st.Lighting.light11", backgroundColor:"#00a0dc", nextState: "on"
-                attributeState "turningOff", label:'${name}', icon:"st.Lighting.light13", backgroundColor:"#ffffff", nextState: "off"
+               attributeState "off",  label:"Off", action:"on", nextState: "turningOn", icon: "http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png",backgroundColor: "#ffffff"
+              attributeState "on", label:"On", action:"off",  nextState: "turningOff", icon: "http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png",backgroundColor: "#00a0dc"
+                attributeState "turningOn", label:'${name}', icon:"http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png", backgroundColor:"#00a0dc", nextState: "on"
+                attributeState "turningOff", label:'${name}', icon:"http://cdn.device-icons.smartthings.com/Health%20&%20Wellness/health2-icn@2x.png", backgroundColor:"#ffffff", nextState: "off"
             }
             // Note - this Approach works to display this name in the Child Device but does not carry through to the parent. Multi-attribute tiles do not work on a childTile??
             tileAttribute ("device.friendlyName", key: "SECONDARY_CONTROL") {
@@ -68,16 +68,16 @@ def onConfirmed() {
 }
 
 def offConfirmed() {
-  sendEvent(name: "switch", value: "off", displayed:true)
+  sendEvent(name: "switch", value: "off", displayed: true)
 }
 
 def on() {
-  parent.childOn(device.currentCircuitId)
+  parent.poolPumpOn()
   sendEvent(name: "switch", value: "turningOn", displayed: false, isStateChange: false)
 }
 
 def off() {
-  parent.childOff(device.currentCircuitId)
+  parent.poolPumpOff()
   sendEvent(name: "switch", value: "turningOff", displayed: false, isStateChange: false)
 }
 

@@ -12,29 +12,30 @@
  *
  */
 metadata {
-	definition (name: "Pentair Pool Control Switch", namespace: "bsileo", author: "Brad Sileo") {
-		capability "Switch"
+  definition (name: "Pentair Circuit Switch", namespace: "bsileo", author: "Brad Sileo") {
+    capability "Switch"
         command onConfirmed
         command offConfirmed
         attribute "friendlyName", "string"
         attribute "circuitFunction", "string"
-	}
+        attribute "circuitId", "integer"
+  }
 
-	// simulator metadata
-	simulator {
-		// status messages
-		status "on": "switch:on"
-		status "off": "switch:off"
+  // simulator metadata
+  simulator {
+    // status messages
+    status "on": "switch:on"
+    status "off": "switch:off"
 
-		// reply messages
-		reply "on": "switch:on"
-		reply "off": "switch:off"
-	}
+    // reply messages
+    reply "on": "switch:on"
+    reply "off": "switch:off"
+  }
 
-	// UI tile definitions
-	tiles {
-		multiAttributeTile(name:"switch", type: "generic", width: 1, height: 1, canChangeIcon: true)  {
-        	tileAttribute("device.switch", key: "PRIMARY_CONTROL") {
+  // UI tile definitions
+  tiles {
+    multiAttributeTile(name:"switch", type: "generic", width: 1, height: 1, canChangeIcon: true)  {
+          tileAttribute("device.switch", key: "PRIMARY_CONTROL") {
                 attributeState "off", label: '${name}', action: "switch.on", icon: "st.switches.switch.off", backgroundColor: "#ffffff", nextState: "turningOn"           
                 attributeState "on", label: '${name}', action: "switch.off", icon: "st.switches.switch.on", backgroundColor: "#79b821", nextState: "tuningOff"
                 attributeState "turningOn", label:'${name}', icon:"st.switches.switch.on", backgroundColor:"#00a0dc", nextState: "on"
@@ -42,54 +43,52 @@ metadata {
             }
             // Note - this Approach works to display this name in the Child Device but does not carry through to the parent. Multi-attribute tiles do not work on a childTile??
             tileAttribute ("device.friendlyName", key: "SECONDARY_CONTROL") {
-        		attributeState "name", label:'${currentValue}'
-    		}		
+            attributeState "name", label:'${currentValue}'
+        }		
         }
      }
-	main "switch"
-	details "switch"
+  main "switch"
+  details "switch"
 }
 
 def installed() {	
 }
 
 def parse(String description) {
-	try {
-         def pair = description.split(":")
-         createEvent(name: pair[0].trim(), value: pair[1].trim())
-     }
-     catch (java.lang.ArrayIndexOutOfBoundsException e) {
-           log.debug "Error! " + e   
-    }
-	
+  try {
+    def pair = description.split(":")
+    createEvent(name: pair[0].trim(), value: pair[1].trim())
+  } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+    log.debug "Error! " + e
+  }
 }
 
 def onConfirmed() {
-    //log.debug("CONF ${device} turned on")
-	sendEvent(name: "switch", value: "on", displayed:true)    
+  sendEvent(name: "switch", value: "on", displayed: true)
 }
 
 def offConfirmed() {
-	//log.debug("CONF ${device} turned off")
-	sendEvent(name: "switch", value: "off", displayed:true)  
+  sendEvent(name: "switch", value: "off", displayed: true)
 }
 
 def on() {
-	parent.childOn(device.deviceNetworkId)
-    sendEvent(name: "switch", value: "turningOn", displayed:false,isStateChange:false)    
+  parent.childOn(device.currentCircuitId)
+  sendEvent(name: "switch", value: "turningOn", displayed: false, isStateChange: false)    
 }
 
 def off() {
-	parent.childOff(device.deviceNetworkId)
-    sendEvent(name: "switch", value: "turningOff", displayed:false,isStateChange:false)
+  parent.childOff(device.currentCircuitId)
+  sendEvent(name: "switch", value: "turningOff", displayed: false, isStateChange: false)
 }
 
 def setFriendlyName(name) {
-   //log.debug("Set FName to ${name}")
-   sendEvent(name: "friendlyName", value: name, displayed:false)
+   sendEvent(name: "friendlyName", value: name, displayed: false)
 }
 
 def setCircuitFunction(name) {
-   //log.debug("Set CircuitFunction to ${name}")
-   sendEvent(name: "circuitFunction", value: name, displayed:false)
+   sendEvent(name: "circuitFunction", value: name, displayed: false)
+}
+
+def setCircuitId(id) {
+   sendEvent(name: "circuitId", value: id, displayed: false)
 }
