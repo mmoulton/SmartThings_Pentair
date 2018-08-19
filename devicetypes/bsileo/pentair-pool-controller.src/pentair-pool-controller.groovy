@@ -147,15 +147,15 @@ def updated() {
 }
 
 def init() {
-  def poolPump = getPoolPumpChild()
-  def poolHeat = getPoolHeatChild()
-  def spaPump = getSpaPumpChild()
-  def spaHeat = getSpaHeatChild()
-  def airTemp = getAirTempChild()
-  def solarTemp = getSolarTempChild()
-  def poolChlorinator = getPoolChlorinatorChild()
-  def poolIntellichem = getPoolIntellichemChild()
-  def circuits = getCircuitChildren()
+  getPoolPumpChild()
+  getPoolHeatChild()
+  getSpaPumpChild()
+  getSpaHeatChild()
+  getAirTempChild()
+  getSolarTempChild()
+  getPoolChlorinatorChild()
+  getPoolIntellichemChild()
+  getCircuitChildren()
 }
 
 def refresh() {
@@ -267,109 +267,109 @@ def getHubId() {
 }
 
 def getPoolPumpChild() {
-  def poolPump = childDevices.find({it.deviceNetworkId == getChildDNI("poolPump")})
-  if (!poolPump) {
-      poolPump = addChildDevice("bsileo","Pentair Pool Pump Control", getChildDNI("poolPump"), getHubId(),
+  def child = childDevices.find({it.deviceNetworkId == getChildDNI("poolPump")})
+  if (!child) {
+      child = addChildDevice("bsileo","Pentair Pool Pump Control", getChildDNI("poolPump"), getHubId(),
                                 [completedSetup: true, label: "${device.displayName} (Pool Pump)" , isComponent:false, componentName: "poolPump", componentLabel:"${device.displayName} (Pool Pump)" ])
       log.debug "Created PoolPump"
   }
-	return poolPump
+	return child
 }
 
 def getPoolHeatChild() {
-  def poolHeat = childDevices.find({it.deviceNetworkId == getChildDNI("poolHeat")})
-  if (!poolHeat) {
-    poolHeat = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("poolHeat"), getHubId(),
+  def child = childDevices.find({it.deviceNetworkId == getChildDNI("poolHeat")})
+  if (!child) {
+    child = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("poolHeat"), getHubId(),
                               [completedSetup: true, label: "${device.displayName} (Pool Heat)" , isComponent:false, componentName: "poolHeat", componentLabel:"${device.displayName} (Pool Heat)" ])
     log.debug "Created PoolHeat"
   }
-	return poolHeat
+	return child
 }
 
 def getSpaPumpChild() {
-  def spaPump
+  def child
   if (getDataValue("includeSpa") == 'true') {
-      spaPump = childDevices.find({it.deviceNetworkId == getChildDNI("spaPump")})
-      if (!spaPump) {
-          spaPump = addChildDevice("bsileo","Pentair Spa Pump Control", getChildDNI("spaPump"), getHubId(),
+      child = childDevices.find({it.deviceNetworkId == getChildDNI("spaPump")})
+      if (!child) {
+          child = addChildDevice("bsileo","Pentair Spa Pump Control", getChildDNI("spaPump"), getHubId(),
                                     [completedSetup: true, label: "${device.displayName} (Spa Pump)" , isComponent:false, componentName: "spaPump", componentLabel:"${device.displayName} (Spa Pump)" ])
           log.debug "Created SpaPump Child"
       }
   }
-	return spaPump;
+	return child;
 }
 
 def getSpaHeatChild() {
-  def spaHeat
+  def child
   if (getDataValue("includeSpa") == 'true') {
-    def spaHeat = childDevices.find({it.deviceNetworkId == getChildDNI("spaHeat")})
-    if (!spaHeat) {
-        spaHeat = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("spaHeat"), getHubId(),
+    child = childDevices.find({it.deviceNetworkId == getChildDNI("spaHeat")})
+    if (!child) {
+        child = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("spaHeat"), getHubId(),
                                   [completedSetup: true, label: "${device.displayName} (Spa Heat)" , isComponent:false, componentName: "spaHeat", componentLabel:"${device.displayName} (Spa Heat)" ])
         log.debug "Created SpaHeat"
     }
   }
-	return spaHeat
+	return child
 }
 
 def getAirTempChild() {
-  def airTemp = childDevices.find({it.deviceNetworkId == getChildDNI("airTemp")})
-  if (!airTemp) {
-    airTemp = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("airTemp"), getHubId(),
+  def child = childDevices.find({it.deviceNetworkId == getChildDNI("airTemp")})
+  if (!child) {
+    child = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("airTemp"), getHubId(),
                               [ label: "${device.displayName} Air Temperature", componentName: "airTemp", componentLabel: "${device.displayName} Air Temperature",
                               isComponent:false, completedSetup:true])
   }
-	return airTemp
+	return child
 }
 
 def getSolarTempChild() {
-  def solarTemp
+  def child
   if (getDataValue("includeSolar") == 'true') {
-    solarTemp = childDevices.find({it.deviceNetworkId == getChildDNI("solarTemp")})
-    if (!solarTemp) {
+    child = childDevices.find({it.deviceNetworkId == getChildDNI("solarTemp")})
+    if (!child) {
       log.debug("Create Solar temp")
-      solarTemp = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("solarTemp"), getHubId(),
+      child = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("solarTemp"), getHubId(),
                                 [ label: "${device.displayName} Solar Temperature", componentName: "solarTemp", componentLabel: "${device.displayName} Solar Temperature",
                                 isComponent:false, completedSetup:true])
     }
   } else {
-    solarTemp = childDevices.find({it.deviceNetworkId == getChildDNI("solarDummy")})
-    if (!solarTemp) {
+    child = childDevices.find({it.deviceNetworkId == getChildDNI("solarDummy")})
+    if (!child) {
       log.debug("Create Solar Dummy")
-      solarTemp = addChildDevice("bsileo","Pentair Dummy Tile", getChildDNI("solarDummy"), getHubId(),
+      child = addChildDevice("bsileo","Pentair Dummy Tile", getChildDNI("solarDummy"), getHubId(),
                                 [ label: "${device.displayName} Solar Dummy", componentName: "solarDummy", componentLabel: "${device.displayName} Solar Dummy",
                                 isComponent:false, completedSetup:true])
       }
   }
-	return solarTemp
+	return child
 }
 
 def getPoolChlorinatorChild() {
-  def poolChlorinator
+  def child
   if (getDataValue("includeChlorinator")=='true') {
-    poolChlorinator = childDevices.find({it.deviceNetworkId == getChildDNI("poolChlorinator")})
-    if (!poolChlorinator) {
+    child = childDevices.find({it.deviceNetworkId == getChildDNI("poolChlorinator")})
+    if (!child) {
       log.debug("Create Chlorinator")
-      poolChlorinator = addChildDevice("bsileo","Pentair Chlorinator", getChildDNI("poolChlorinator"), getHubId(),
+      child = addChildDevice("bsileo","Pentair Chlorinator", getChildDNI("poolChlorinator"), getHubId(),
                                       [ label: "${device.displayName} Chlorinator", componentName: "poolChlorinator", componentLabel: "${device.displayName} Chlorinator",
                                       isComponent:true, completedSetup:true])
     }
   }
-	return poolChlorinator
+	return child
 }
 
 def getPoolIntellichemChild() {
-  def poolIntellichem
+  def child
   if (getDataValue("includeIntellichem")=='true') {
-    poolIntellichem = childDevices.find({it.deviceNetworkId == getChildDNI("poolIntellichem")})
-    if (!poolIntellichem) {
+    child = childDevices.find({it.deviceNetworkId == getChildDNI("poolIntellichem")})
+    if (!child) {
       log.debug("Create Intellichem")
-      poolIntellichem = addChildDevice("bsileo","Pentair Intellichem", getChildDNI("poolIntellichem"), getHubId(),
+      child = addChildDevice("bsileo","Pentair Intellichem", getChildDNI("poolIntellichem"), getHubId(),
                                       [ label: "${device.displayName} Intellichem", componentName: "poolIntellichem", componentLabel: "${device.displayName} Intellichem",
                                       isComponent:false, completedSetup:true])
     }
   }
-	return poolIntellichem
+	return child
 }
 
 def getCircuitChildren() {
@@ -427,37 +427,37 @@ def getChildDNI(name) {
 
 def parseTemps(msg) {
 
-  def poolHeat = getPoolHeatChild()
-  def spaHeat = getSpaHeatChild()
-  def airTemp = getAirTempChild()
-  def solarTemp = getSolarTempChild()
+  def ph = getPoolHeatChild()
+  def sh = getSpaHeatChild()
+  def at = getAirTempChild()
+  def st = getSolarTempChild()
 
   msg.each {k, v ->
     //log.debug "TEMP Key:${k}  Val:${v}"
     switch (k) {
       case "poolTemp":
-        poolHeat?.setTemperature(v)
+        ph?.setTemperature(v)
         break
       case "spaTemp":
-        spaHeat?.setTemperature(v)
+        sh?.setTemperature(v)
         break
       case "airTemp":
-        airTemp?.setTemperature(v)
+        at?.setTemperature(v)
         break
       case "solarTemp":
-        solarTemp?.setTemperature(v)
+        st?.setTemperature(v)
         break
       case "poolSetPoint":
-        poolHeat?.setHeatingSetpoint(v)
+        ph?.setHeatingSetpoint(v)
         break
       case "spaSetPoint":
-        spaHeat?.setHeatingSetpoint(v)
+        sp?.setHeatingSetpoint(v)
         break
       case "poolHeatMode":
-        poolHeat?.switchToModeID(v)
+        ph?.switchToModeID(v)
         break
       case "spaHeatMode":
-        spaHeat?.switchToModeID(v)
+        sh?.switchToModeID(v)
         break
       default:
         sendEvent(name: k, value: v, displayed:false)
@@ -467,8 +467,8 @@ def parseTemps(msg) {
 }
 
 def parseChlorinator(msg) {
-  def poolChlorinator = getPoolChlorinatorChild()
-  poolChlorinator?.parse(msg)
+  def pc = getPoolChlorinatorChild()
+  pc?.parse(msg)
 }
 
 def on() {
