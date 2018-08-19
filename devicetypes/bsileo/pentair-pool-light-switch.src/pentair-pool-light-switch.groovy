@@ -18,7 +18,7 @@ metadata {
         command offConfirmed
         attribute "friendlyName", "string"
         attribute "circuitFunction", "string"
-        attribute "circuitId", "integer"
+        attribute "circuitId", "number"
   }
 
   // simulator metadata

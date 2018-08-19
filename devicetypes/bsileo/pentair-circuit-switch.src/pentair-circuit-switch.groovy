@@ -14,11 +14,11 @@
 metadata {
   definition (name: "Pentair Circuit Switch", namespace: "bsileo", author: "Brad Sileo") {
     capability "Switch"
-        command onConfirmed
-        command offConfirmed
-        attribute "friendlyName", "string"
-        attribute "circuitFunction", "string"
-        attribute "circuitId", "integer"
+    command onConfirmed
+    command offConfirmed
+    attribute "friendlyName", "string"
+    attribute "circuitFunction", "string"
+    attribute "circuitId", "number"
   }
 
   // simulator metadata
