@@ -280,7 +280,7 @@ def getPoolHeatChild() {
   def child = childDevices.find({it.deviceNetworkId == getChildDNI("poolHeat")})
   if (!child) {
     child = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("poolHeat"), getHubId(),
-                              [completedSetup: true, label: "${device.displayName} (Pool Heat)" , isComponent:false, componentName: "poolHeat", componentLabel:"${device.displayName} (Pool Heat)" ])
+                          [completedSetup: true, label: "${device.displayName} (Pool Heat)" , isComponent:false, componentName: "poolHeat", componentLabel:"${device.displayName} (Pool Heat)" ])
     log.debug "Created PoolHeat"
   }
 	return child
@@ -292,7 +292,7 @@ def getSpaPumpChild() {
       child = childDevices.find({it.deviceNetworkId == getChildDNI("spaPump")})
       if (!child) {
           child = addChildDevice("bsileo","Pentair Spa Pump Control", getChildDNI("spaPump"), getHubId(),
-                                    [completedSetup: true, label: "${device.displayName} (Spa Pump)" , isComponent:false, componentName: "spaPump", componentLabel:"${device.displayName} (Spa Pump)" ])
+                                [completedSetup: true, label: "${device.displayName} (Spa Pump)" , isComponent:false, componentName: "spaPump", componentLabel:"${device.displayName} (Spa Pump)" ])
           log.debug "Created SpaPump Child"
       }
   }
@@ -305,7 +305,7 @@ def getSpaHeatChild() {
     child = childDevices.find({it.deviceNetworkId == getChildDNI("spaHeat")})
     if (!child) {
         child = addChildDevice("bsileo","Pentair Water Thermostat", getChildDNI("spaHeat"), getHubId(),
-                                  [completedSetup: true, label: "${device.displayName} (Spa Heat)" , isComponent:false, componentName: "spaHeat", componentLabel:"${device.displayName} (Spa Heat)" ])
+                              [completedSetup: true, label: "${device.displayName} (Spa Heat)" , isComponent:false, componentName: "spaHeat", componentLabel:"${device.displayName} (Spa Heat)" ])
         log.debug "Created SpaHeat"
     }
   }
@@ -316,8 +316,8 @@ def getAirTempChild() {
   def child = childDevices.find({it.deviceNetworkId == getChildDNI("airTemp")})
   if (!child) {
     child = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("airTemp"), getHubId(),
-                              [ label: "${device.displayName} Air Temperature", componentName: "airTemp", componentLabel: "${device.displayName} Air Temperature",
-                              isComponent:false, completedSetup:true])
+                           [ label: "${device.displayName} Air Temperature", componentName: "airTemp", componentLabel: "${device.displayName} Air Temperature",
+                           isComponent: false, completedSetup: true])
   }
 	return child
 }
@@ -329,8 +329,8 @@ def getSolarTempChild() {
     if (!child) {
       log.debug("Create Solar temp")
       child = addChildDevice("bsileo","Pentair Temperature Measurement Capability", getChildDNI("solarTemp"), getHubId(),
-                                [ label: "${device.displayName} Solar Temperature", componentName: "solarTemp", componentLabel: "${device.displayName} Solar Temperature",
-                                isComponent:false, completedSetup:true])
+                             [ label: "${device.displayName} Solar Temperature", componentName: "solarTemp", componentLabel: "${device.displayName} Solar Temperature",
+                             isComponent: false, completedSetup: true])
     }
   } else {
     child = childDevices.find({it.deviceNetworkId == getChildDNI("solarDummy")})
@@ -338,7 +338,7 @@ def getSolarTempChild() {
       log.debug("Create Solar Dummy")
       child = addChildDevice("bsileo","Pentair Dummy Tile", getChildDNI("solarDummy"), getHubId(),
                                 [ label: "${device.displayName} Solar Dummy", componentName: "solarDummy", componentLabel: "${device.displayName} Solar Dummy",
-                                isComponent:false, completedSetup:true])
+                                isComponent: false, completedSetup: true])
       }
   }
 	return child
@@ -351,8 +351,8 @@ def getPoolChlorinatorChild() {
     if (!child) {
       log.debug("Create Chlorinator")
       child = addChildDevice("bsileo","Pentair Chlorinator", getChildDNI("poolChlorinator"), getHubId(),
-                                      [ label: "${device.displayName} Chlorinator", componentName: "poolChlorinator", componentLabel: "${device.displayName} Chlorinator",
-                                      isComponent:true, completedSetup:true])
+                             [ label: "${device.displayName} Chlorinator", componentName: "poolChlorinator", componentLabel: "${device.displayName} Chlorinator",
+                             isComponent: false, completedSetup: true])
     }
   }
 	return child
@@ -365,8 +365,8 @@ def getPoolIntellichemChild() {
     if (!child) {
       log.debug("Create Intellichem")
       child = addChildDevice("bsileo","Pentair Intellichem", getChildDNI("poolIntellichem"), getHubId(),
-                                      [ label: "${device.displayName} Intellichem", componentName: "poolIntellichem", componentLabel: "${device.displayName} Intellichem",
-                                      isComponent:false, completedSetup:true])
+                             [ label: "${device.displayName} Intellichem", componentName: "poolIntellichem", componentLabel: "${device.displayName} Intellichem",
+                             isComponent: false, completedSetup: true])
     }
   }
 	return child
@@ -388,9 +388,9 @@ def getCircuitChildren() {
       def auxButton = childDevices.find({it.deviceNetworkId == getChildDNI(auxName)})
       if (!auxButton) {
         log.info "Create Aux Circuit switch ${auxLabel} Named=${auxName}"
-        auxButton = addChildDevice("bsileo","Pentair Circuit Switch", getChildDNI(auxName), getHubId(),
-                                    [completedSetup: true, label: auxLabel , isComponent:false, componentName: auxName, componentLabel: auxLabel,
-                                    data: [type:cData.circuitFunction, raw: cData]])
+        auxButton = addChildDevice("bsileo", "Pentair Circuit Switch", getChildDNI(auxName), getHubId(),
+                                    [completedSetup: true, label: auxLabel , isComponent: false, componentName: auxName, componentLabel: auxLabel,
+                                    data: [type:cData.circuitFunction]])
         log.debug "Success - Created Circuit Switch ${i}"
       }
       children[toIntOrNull(i)] = auxButton
@@ -401,16 +401,17 @@ def getCircuitChildren() {
 
   def lCircuits = parent.state.lightCircuits
   lCircuits.each {i,k ->
+    def cData = parent.state.circuitData[i.toString()]
     def auxName = "circuit${i}"
     def auxLabel = "${device.displayName} (${k.circuitName})"
     try {
       def auxButton = childDevices.find({it.deviceNetworkId == getChildDNI(auxName)})
       if (!auxButton) {
         log.info "Create Light switch ${auxLabel} Named=${auxName}"
-          auxButton = addChildDevice("bsileo","Pentair Pool Light Switch", getChildDNI(auxName), getHubId(),
-                                      [completedSetup: true, label: auxLabel , isComponent:false, componentName: auxName, componentLabel: auxLabel,
-                                      data: [type:cData.circuitFunction, raw: cData]])
-          log.debug "Success - Created Light switch ${i}"
+        auxButton = addChildDevice("bsileo", "Pentair Pool Light Switch", getChildDNI(auxName), getHubId(),
+                                    [completedSetup: true, label: auxLabel , isComponent: false, componentName: auxName, componentLabel: auxLabel,
+                                    data: [type: cData.circuitFunction]])
+        log.debug "Success - Created Light switch ${i}"
       }
       children[toIntOrNull(i)] = auxButton
     } catch(physicalgraph.app.exception.UnknownDeviceTypeException e) {
@@ -525,11 +526,11 @@ def spaPumpCircuitId() {
 }
 
 def circuitIdOfType(type) {
-  return childDevices.find({it.currentCircuitFunction == type})?.currentCircuitId
+  return childDevices.find({it.currentCircuitFunction == type})?.currentValue("circuitId")
 }
 
 def circuitIdsOfType(type) {
-  return childDevices.findAll({it.currentCircuitFunction == type})?.collect({ it.currentCircuitId })
+  return childDevices.findAll({it.currentCircuitFunction == type})?.collect({ it.currentValue("circuitId") })
 }
 
 def childOn(id) {
@@ -715,7 +716,7 @@ def roundC (tempC) {
 }
 
  def toIntOrNull(it) {
-   return it?.isInteger() ? it.toInteger() : null
+   return it?.toString().isInteger() ? Integer.parseInt(it.toString()) : null
  }
 
 def sync(ip, port) {

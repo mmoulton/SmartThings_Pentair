@@ -14,11 +14,11 @@
 metadata {
   definition (name: "Pentair Pool Light Switch", namespace: "bsileo", author: "Brad Sileo") {
     capability "Switch"
-        command onConfirmed
-        command offConfirmed
-        attribute "friendlyName", "string"
-        attribute "circuitFunction", "string"
-        attribute "circuitId", "number"
+    command onConfirmed
+    command offConfirmed
+    attribute "friendlyName", "string"
+    attribute "circuitFunction", "string"
+    attribute "circuitId", "number"
   }
 
   // simulator metadata
@@ -72,12 +72,12 @@ def offConfirmed() {
 }
 
 def on() {
-  parent.childOn(device.currentCircuitId)
+  parent.childOn(device.currentValue("circuitId"))
   sendEvent(name: "switch", value: "turningOn", displayed: false, isStateChange: false)
 }
 
 def off() {
-  parent.childOff(device.currentCircuitId)
+  parent.childOff(device.currentValue("circuitId"))
   sendEvent(name: "switch", value: "turningOff", displayed: false, isStateChange: false)
 }
 
@@ -90,5 +90,6 @@ def setCircuitFunction(name) {
 }
 
 def setCircuitId(id) {
-   sendEvent(name: "circuitId", value: id, displayed: false)
+  log.info "Set CIRCUIT ID ${id}"
+  sendEvent(name: "circuitId", value: id, displayed: false)
 }
